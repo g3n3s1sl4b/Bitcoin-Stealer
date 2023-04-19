@@ -5,7 +5,11 @@ process.title = "Bitcoin Stealer by Michal2SAB";
 const CoinKey = require('coinkey');
 const fs = require('fs');
 
+let privateKeyHex, ck, addresses;
+addresses = new Map();
+
 const data = fs.readFileSync('./riches.txt');
+data.toString().split("\n").forEach(address => addresses.set(address, true));
 
 function generate() {
     // generate random private key hex
@@ -19,7 +23,7 @@ function generate() {
     // ^ remove "//" from line above if you wanna see the logs, but remember it slows down the whole process a lot.
         
     // if generated wallet matches any from the riches.txt file, tell us we won!
-    if(data.includes(ck.publicAddress)){
+    if(addresses.has(ck.publicAddress)){
         console.log("");
         process.stdout.write('\x07');
         console.log("\x1b[32m%s\x1b[0m", ">> Success: " + ck.publicAddress);
@@ -33,6 +37,9 @@ function generate() {
         // close program after success
         process.exit();
     }
+    // destroy the objects
+    ck = null;
+    privateKeyHex = null;
 }
 
 // the function to generate random hex string
@@ -49,4 +56,8 @@ console.log("\x1b[32m%s\x1b[0m", ">> Program Started and is working silently (ed
 // run forever
 while(true){
     generate();
+    if (process.memoryUsage().heapUsed / 1000000 > 500) {
+        global.gc();
+    }
+    //console.log("Heap used : ", process.memoryUsage().heapUsed / 1000000);
 }
